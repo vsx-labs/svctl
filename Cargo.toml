@@ -1,6 +1,16 @@
-[package]
+
+[workspace]
+members = ["proto", "cli"]
+
+[workspace.package]
 name = "svctl"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
+[workspace.dependencies]
+clap = { version = "4.5.23", features = ["derive", "env"] }
+prost = "0.13"
+prost-types = "0.13"
+svctl-proto = { path = "proto" }
+svctl-cli = { path = "cli" }
+prost-build = "0.13.4"

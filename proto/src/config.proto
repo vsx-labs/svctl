@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package dev.vsx.svctl.v1;
+
+// Global Configuration
+message Config {
+    bool debug = 1;
+
+    // show what would occur, but don't execute any commands
+    bool dry_run = 2;
+
+    // filesystem location where sources should be copied, defaults to $HOME/src/github.com
+    string source_path = 3;
+
+    // ledger_path, defaults to /mnt/ledger/{cluster}
+    string ledger_path = 4;
+
+    // accounts_path, defaults to /mnt/accounts/{cluster}
+    string accounts_path = 5;
+
+    // snapshot_path, defaults to /mnt/snapshot/{cluster}
+    string snapshot_path = 6;
+
+    // the set of clusters
+    repeated ClusterConfig clusters = 7;
+
+    // the list of machines in the fleet
+    repeated MachineConfig machines = 8;
+}
+
+enum ClusterName {
+    CLUSTERNAME_UNKNOWN = 0;
+    DEVNET = 1;
+    TESTNET = 2;
+    MAINNET_BETA = 3;
+}
+
+message ClusterConfig {
+    // the cluster to connect to
+    ClusterName name = 1;
+}
+
+message MachineConfig {
+    // name of the machine, an artibrary user-defined moniker, but must be unique within the set of Machines in the
+    string name = 1;
+    // the ip_address of the machine
+    string ip_address = 2;
+    // the os username, defaults to 'sol'
+    string username = 3;
+}
