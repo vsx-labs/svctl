@@ -1,25 +1,37 @@
-// It is important to maintain the same structure as in the proto.
-pub mod dev {
-    pub mod vsx {
-        pub mod svctl {
-            pub mod v1 {
-                include!(concat!(env!("OUT_DIR"), "/dev.vsx.svctl.v1.rs"));
-            }
-        }
-    }
+pub mod gen;
+
+use {
+    gen::dev::vsx::svctl::v1,
+    prost::Message,
+    std::{
+        fs::File,
+        io::{self, BufRead, BufReader},
+        path::Path,
+    },
+    thiserror::Error,
+};
+
+#[derive(Error, Debug)]
+pub enum ConfigError {
+    #[error("config invalid")]
+    Invalid(#[from] io::Error),
+    #[error("unknown configuration error")]
+    Unknown,
 }
 
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+pub fn get_default_config() -> v1::Config {
+    return v1::Config::default();
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub fn read_config(path: &Path) -> Result<v1::Config, ConfigError> {
+    let file = File::open(path)?;
+    let mut reader = BufReader::new(file);
+    // let capacity = reader.capacity();
+    let buffer = reader.fill_buf()?;
+    let mut config = get_default_config();
+    let result = v1::Config::merge_length_delimited(&mut config, buffer);
+    result.unwrap_or_else(|err| {
+        panic!("invalid config: {err}");
+    });
+    return Ok(config);
 }

@@ -26,13 +26,20 @@ message Config {
 
     // the list of machines in the fleet
     repeated MachineConfig machines = 8;
+
+    // the machine user
+    UserConfig user = 9;
 }
 
 enum ClusterName {
-    CLUSTERNAME_UNKNOWN = 0;
-    DEVNET = 1;
-    TESTNET = 2;
-    MAINNET_BETA = 3;
+    CLUSTER_NAME_UNSPECIFIED = 0;
+    CLUSTER_NAME_DEVNET = 1;
+    CLUSTER_NAME_TESTNET = 2;
+    CLUSTER_NAME_MAINNET_BETA = 3;
+}
+
+message UserConfig {
+    string name = 1;
 }
 
 message ClusterConfig {
@@ -47,4 +54,17 @@ message MachineConfig {
     string ip_address = 2;
     // the os username, defaults to 'sol'
     string username = 3;
+}
+
+message ExecConfig {
+    string command = 1;
+    repeated string args = 2;
+    map<string,string> env = 3;
+    bool dry_run = 5;
+    bool color = 6;
+}
+
+message File {
+    string path = 1;
+    bytes content = 2;
 }
