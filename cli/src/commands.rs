@@ -3,6 +3,11 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
+#[derive(Default, Clone, Debug)]
+pub struct ComputedValues {
+    // put derived configuration here
+}
+
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 pub struct App {
@@ -12,6 +17,9 @@ pub struct App {
 
     #[command(subcommand)]
     pub command: Option<TopCommands>,
+
+    #[arg(skip)]
+    pub computed: ComputedValues,
 }
 
 #[derive(Subcommand)]
@@ -21,10 +29,32 @@ pub enum TopCommands {
         #[command(subcommand)]
         command: Option<ConfigCommands>,
     },
+    User {
+        #[command(subcommand)]
+        command: Option<UserCommands>,
+    },
+    Watchtower {
+        #[command(subcommand)]
+        command: Option<WatchtowerCommands>,
+    },
 }
 
 #[derive(Subcommand)]
 pub enum ConfigCommands {
     /// show the current config
     Show {},
+}
+
+#[derive(Subcommand)]
+pub enum UserCommands {
+    /// show the current user
+    Show {},
+    /// install as sudo
+    Install {},
+}
+
+#[derive(Subcommand)]
+pub enum WatchtowerCommands {
+    /// install watchtower
+    Install {},
 }

@@ -1,16 +1,23 @@
 
 [workspace]
-members = ["proto", "cli"]
+members = ["proto", "cli", "template"]
+resolver = "2"
 
 [workspace.package]
-name = "svctl"
 version = "0.1.0"
 edition = "2021"
 
 [workspace.dependencies]
+run_script = "0.11.0"
+askama = "0.12.1"
+thiserror = "2.0.9"
+include_dir = "0.7.4"
 clap = { version = "4.5.23", features = ["derive", "env"] }
 prost = "0.13"
 prost-types = "0.13"
 svctl-proto = { path = "proto" }
 svctl-cli = { path = "cli" }
 prost-build = "0.13.4"
+serde = "1.0"
+syntect = "5.2.0"
+lazy_static = "1.5.0"

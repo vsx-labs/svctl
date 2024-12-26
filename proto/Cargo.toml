@@ -18,7 +18,7 @@ bytes = "1.1.0"
 prost = "0.13.1"
 pbjson = "0.7"
 pbjson-types = "0.7"
-serde = "1.0"
+serde.workspace = true
 tonic = { version = "0.12", features = ["gzip"] }
 thiserror.workspace = true
 

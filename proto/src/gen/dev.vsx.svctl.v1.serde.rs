@@ -204,6 +204,12 @@ impl serde::Serialize for Config {
         if self.user.is_some() {
             len += 1;
         }
+        if !self.home_path.is_empty() {
+            len += 1;
+        }
+        if !self.user_name.is_empty() {
+            len += 1;
+        }
         let mut struct_ser = serializer.serialize_struct("dev.vsx.svctl.v1.Config", len)?;
         if self.debug {
             struct_ser.serialize_field("debug", &self.debug)?;
@@ -232,6 +238,12 @@ impl serde::Serialize for Config {
         if let Some(v) = self.user.as_ref() {
             struct_ser.serialize_field("user", v)?;
         }
+        if !self.home_path.is_empty() {
+            struct_ser.serialize_field("homePath", &self.home_path)?;
+        }
+        if !self.user_name.is_empty() {
+            struct_ser.serialize_field("userName", &self.user_name)?;
+        }
         struct_ser.end()
     }
 }
@@ -256,6 +268,10 @@ impl<'de> serde::Deserialize<'de> for Config {
             "clusters",
             "machines",
             "user",
+            "home_path",
+            "homePath",
+            "user_name",
+            "userName",
         ];
 
         #[allow(clippy::enum_variant_names)]
@@ -269,6 +285,8 @@ impl<'de> serde::Deserialize<'de> for Config {
             Clusters,
             Machines,
             User,
+            HomePath,
+            UserName,
         }
         impl<'de> serde::Deserialize<'de> for GeneratedField {
             fn deserialize<D>(deserializer: D) -> std::result::Result<GeneratedField, D::Error>
@@ -299,6 +317,8 @@ impl<'de> serde::Deserialize<'de> for Config {
                             "clusters" => Ok(GeneratedField::Clusters),
                             "machines" => Ok(GeneratedField::Machines),
                             "user" => Ok(GeneratedField::User),
+                            "homePath" | "home_path" => Ok(GeneratedField::HomePath),
+                            "userName" | "user_name" => Ok(GeneratedField::UserName),
                             _ => Err(serde::de::Error::unknown_field(value, FIELDS)),
                         }
                     }
@@ -327,6 +347,8 @@ impl<'de> serde::Deserialize<'de> for Config {
                 let mut clusters__ = None;
                 let mut machines__ = None;
                 let mut user__ = None;
+                let mut home_path__ = None;
+                let mut user_name__ = None;
                 while let Some(k) = map_.next_key()? {
                     match k {
                         GeneratedField::Debug => {
@@ -383,6 +405,18 @@ impl<'de> serde::Deserialize<'de> for Config {
                             }
                             user__ = map_.next_value()?;
                         }
+                        GeneratedField::HomePath => {
+                            if home_path__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("homePath"));
+                            }
+                            home_path__ = Some(map_.next_value()?);
+                        }
+                        GeneratedField::UserName => {
+                            if user_name__.is_some() {
+                                return Err(serde::de::Error::duplicate_field("userName"));
+                            }
+                            user_name__ = Some(map_.next_value()?);
+                        }
                     }
                 }
                 Ok(Config {
@@ -395,6 +429,8 @@ impl<'de> serde::Deserialize<'de> for Config {
                     clusters: clusters__.unwrap_or_default(),
                     machines: machines__.unwrap_or_default(),
                     user: user__,
+                    home_path: home_path__.unwrap_or_default(),
+                    user_name: user_name__.unwrap_or_default(),
                 })
             }
         }

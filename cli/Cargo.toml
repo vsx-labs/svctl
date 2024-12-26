@@ -1,8 +1,15 @@
 [package]
 name = "svctl-cli"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 [dependencies]
-svctl-proto = { workspace = true }
-clap = { workspace = true }
+askama = "0.12.1"
+svctl-proto.workspace = true
+svctl-template.workspace = true
+clap.workspace = true
+thiserror.workspace = true
+run_script.workspace = true
+syntect.workspace = true
+lazy_static.workspace = true
+# serde_json.workspace = true

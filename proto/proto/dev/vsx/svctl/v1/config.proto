@@ -29,6 +29,12 @@ message Config {
 
     // the machine user
     UserConfig user = 9;
+
+    // home path: ubuntu: "/home"
+    string home_path = 10;
+
+    // the system username, defaults to "sol"
+    string user_name = 11;
 }
 
 enum ClusterName {

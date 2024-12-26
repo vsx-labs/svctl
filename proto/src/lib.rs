@@ -1,5 +1,3 @@
-pub mod gen;
-
 use {
     gen::dev::vsx::svctl::v1,
     prost::Message,
@@ -11,6 +9,9 @@ use {
     thiserror::Error,
 };
 
+pub mod gen;
+pub use gen::dev;
+
 #[derive(Error, Debug)]
 pub enum ConfigError {
     #[error("config invalid")]
@@ -20,7 +21,15 @@ pub enum ConfigError {
 }
 
 pub fn get_default_config() -> v1::Config {
-    return v1::Config::default();
+    let mut config = v1::Config::default();
+
+    config.user_name = String::from("sol");
+    config.home_path = String::from(format!("/home/{0}", config.user_name));
+    config.source_path = String::from("src/github.com");
+    config.clusters = vec![];
+    config.machines = vec![];
+
+    config
 }
 
 pub fn read_config(path: &Path) -> Result<v1::Config, ConfigError> {
