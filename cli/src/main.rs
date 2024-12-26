@@ -1,4 +1,4 @@
-use std::{ffi::OsString, io::IsTerminal};
+use std::io::IsTerminal;
 
 use clap::Parser;
 use svctl_cli::{
@@ -9,13 +9,15 @@ use svctl_cli::{
 use svctl_proto::{get_default_config, read_config};
 
 fn main() {
-    let args = vec![
-        OsString::from("svctl"),
-        OsString::from("watchtower"),
-        OsString::from("install"),
-    ];
+    // let args = vec![
+    //     OsString::from("svctl"),
+    //     OsString::from("watchtower"),
+    //     OsString::from("install"),
+    // ];
 
-    let app = App::parse_from(args);
+    // let app = App::parse_from(args);
+
+    let app = App::parse();
     let mut config = get_default_config();
 
     if let Some(config_path) = app.config.as_deref() {
@@ -23,7 +25,7 @@ fn main() {
     }
 
     let exec_options = ExecOptions {
-        dry_run: false,
+        dry_run: true,
         highlight: std::io::stdout().is_terminal(),
         silent: false,
     };
@@ -42,7 +44,10 @@ fn main() {
                 println!("{:?}", config);
             }
             Some(UserCommands::Install {}) => {
-                let _ = user::install(&exec_options, config.user);
+                let _ = user::install(
+                    &exec_options,
+                    config.user.as_ref().expect("user config is required"),
+                );
             }
             None => {}
         },

@@ -35,9 +35,6 @@ impl SyntaxHighlighter {
     }
 
     pub fn format_lines(&self, filename: &str, code: &String) -> Vec<String> {
-        println!("themes: {:#?}", self.ts.themes.clone().into_keys());
-        // println!("languages: {:#?}", self.ps.syntaxes());
-
         let syntax = self
             .ps
             .find_syntax_by_extension(&filename)

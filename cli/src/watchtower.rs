@@ -13,10 +13,9 @@ struct InstallTemplate<'a> {
 }
 
 pub fn install(options: &ExecOptions, _machine: Option<&MachineConfig>) -> Result<(), ExecError> {
-    let ctx = InstallTemplate { username: "foo" };
-    let script = ctx.render().expect("script rendering failed");
-    let filename = "script.sh".to_string();
-    let result = execute_script(options, filename, script);
+    let template = InstallTemplate { username: "foo" };
+    let script = template.render().expect("script rendering failed");
+    let result = execute_script(options, script);
 
     result.expect("script execution failed");
 

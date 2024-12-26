@@ -21,7 +21,11 @@ pub enum ConfigError {
 }
 
 pub fn get_default_config() -> v1::Config {
+    let mut user_config = v1::UserConfig::default();
+    user_config.name = String::from("sol");
+
     let mut config = v1::Config::default();
+    config.user = Some(user_config);
 
     config.user_name = String::from("sol");
     config.home_path = String::from(format!("/home/{0}", config.user_name));
